@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  fun.luwu.bluejay.tc.security.core.interceptor.SaTokenInterceptor

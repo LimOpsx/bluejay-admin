@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="fun.luwu.bluejay.cb.uaa.mapper.ISysAdminTokenMapper">
+
+    <select id="pageDTO" resultType="fun.luwu.bluejay.sii.uaa.model.vo.SysAdminTokenVO">
+        SELECT * FROM db_bluejay_system.tb_sys_admin_token
+        <where>
+            exp_status = 0 OR exp_status = 1
+            <if test="null != ew.target and '' != ew.target">
+               AND target LIKE CONCAT('%',#{ew.target},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

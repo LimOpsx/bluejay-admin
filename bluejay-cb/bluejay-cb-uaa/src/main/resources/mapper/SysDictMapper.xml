@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="fun.luwu.bluejay.cb.uaa.mapper.ISysDictMapper">
+
+    <select id="pageDTO" resultType="fun.luwu.bluejay.sii.uaa.model.vo.SysDictPageVO">
+        SELECT id,
+               type,
+               name,
+               remark,
+               `is_system` isSystem,
+               status,
+               create_time createTime,
+               update_time updateTime
+        FROM db_bluejay_system.tb_sys_dict d
+
+
+    </select>
+</mapper>

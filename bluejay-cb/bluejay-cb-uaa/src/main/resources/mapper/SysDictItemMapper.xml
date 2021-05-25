@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="fun.luwu.bluejay.cb.uaa.mapper.ISysDictItemMapper">
+
+    <select id="pageDTO" resultType="fun.luwu.bluejay.sii.uaa.model.vo.SysDictItemVO">
+        SELECT di.id, di.dict_id dictId, value, di.code, di.name, di.remark, di.sort, di.status, di.create_time
+        createTime, di.update_time updateTime
+        FROM db_bluejay_system.tb_sys_dict d
+        INNER JOIN db_bluejay_system.tb_sys_dict_item di ON d.id = di.dict_id
+        <where>
+            <if test="null != ew.type and '' != ew.type">
+                AND d.type = #{ew.type}
+            </if>
+            <if test="null != ew.dictId">
+                AND di.dict_id #{ew.dictId}
+            </if>
+            <if test="null != ew.name and ''!= ew.name">
+                AND di.name = #{ew.name}
+            </if>
+            <if test="null != ew.status">
+                AND di.status = #{ew.status}
+            </if>
+        </where>
+    </select>
+</mapper>

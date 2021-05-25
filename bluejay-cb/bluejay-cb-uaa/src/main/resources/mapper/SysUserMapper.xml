@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="fun.luwu.bluejay.cb.uaa.mapper.ISysUserMapper">
+
+    <select id="loadByUsername" resultMap="loadByUsernameMap">
+        SELECT l.*,
+               r.permissions
+        FROM (
+                 SELECT su.id userId,
+                        su.username,
+                        su.`password`,
+                        su.`status`,
+                        sr.id roleId,
+                        sr.`name`,
+                        sr.`code`
+                 FROM db_bluejay_system.tb_sys_user su
+                          INNER JOIN db_bluejay_system.tb_sys_user_map_role umr ON su.id = umr.user_id
+                          INNER JOIN db_bluejay_system.tb_sys_role sr ON sr.id = umr.id
+                 WHERE su.`status` = '0'
+                   AND sr.`status` = '0'
+                   AND username = #{username}
+             ) l
+                 LEFT JOIN (SELECT sa.`code` permissions
+                            FROM db_bluejay_system.tb_sys_authority sa
+                            WHERE sa.`status` = 0) r ON l.`status` = 0
+    </select>
+    <select id="getUserInfo" resultType="fun.luwu.bluejay.sii.uaa.model.vo.UserInfoVO">
+        SELECT username userName, id userId, nick_name name, avatar
+        FROM db_bluejay_system.tb_sys_user
+        WHERE username = #{loginId}
+    </select>
+    <select id="pageDTO" resultType="fun.luwu.bluejay.sii.uaa.model.vo.SysUserPageVO">
+        SELECT id        userId,
+               username,
+               mobile,
+               email,
+               nick_name nickName,
+               gender,
+               avatar,
+               status,
+               create_time,
+               update_time
+        FROM db_bluejay_system.tb_sys_user
+    </select>
+
+    <resultMap id="loadByUsernameMap" type="fun.luwu.bluejay.sii.uaa.model.dto.UserDetailsDTO">
+        <id column="userId" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="status" property="status"/>
+        <result column="roleId" property="roleId"/>
+        <result column="name" property="roleName"/>
+        <result column="code" property="roleCode"/>
+        <collection property="permissions" ofType="java.lang.String">
+            <constructor>
+                <arg column="permissions"/>
+            </constructor>
+        </collection>
+    </resultMap>
+</mapper>

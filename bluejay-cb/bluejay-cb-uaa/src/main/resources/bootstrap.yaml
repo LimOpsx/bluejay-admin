@@ -1,0 +1,34 @@
+server:
+  port: 9961
+
+spring:
+  application:
+    name: @artifactId@
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:9975
+      datasource:
+        flow:
+          nacos:
+            server-addr: localhost:8848
+            dataId: ${spring.application.name}-${spring.profiles.active}-flow-rules
+            groupId: SENTINEL_GROUP
+            namespace: 33bdbe04-62d0-4bbe-8a5e-ec74e9c6c778
+            rule-type: flow
+    nacos:
+      server-addr: ${NACOS_HOST:localhost}:${NACOS_PORT:8848}
+      username: 'nacos'
+      password: 'nacos'
+      discovery:
+        namespace: 33bdbe04-62d0-4bbe-8a5e-ec74e9c6c778
+        group: @profiles.active@
+      config:
+        namespace: 33bdbe04-62d0-4bbe-8a5e-ec74e9c6c778
+        group: @profiles.active@
+        file-extension: yaml
+        name: ${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+        shared-configs:
+          - group: ${spring.profiles.active}
+            dataId: application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+            refresh: true
